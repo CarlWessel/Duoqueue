@@ -9,9 +9,11 @@ export default function Navbar() {
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center space-x-3">
-            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 bg-clip-text text-transparent">
-              StreamMatch
-            </span>
+              <img
+                  src={"/duoqueueTransparent.png"}
+                  alt="Duoqueue"
+                  className="h-16 w-auto object-contain"
+              />
           </Link>
 
           {/* Only show navigation links if user is authenticated */}
@@ -19,25 +21,25 @@ export default function Navbar() {
             <div className="hidden md:flex items-center space-x-8">
               <Link
                 href="/matches"
-                className="text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium transition-colors duration-200"
+                className="text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium transition-colors duration-200"
               >
                 Discover
               </Link>
               <Link
                 href="/matches/list"
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200"
+                className="text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200"
               >
                 Matches
               </Link>
               <Link
                 href="/chat"
-                className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition-colors duration-200"
+                className="text-gray-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition-colors duration-200"
               >
                 Messages
               </Link>
               <Link
                 href="/profile"
-                className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 font-medium transition-colors duration-200"
+                className="text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 font-medium transition-colors duration-200"
               >
                 Profile
               </Link>

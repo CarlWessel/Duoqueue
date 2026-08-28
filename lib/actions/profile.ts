@@ -4,7 +4,7 @@ import { UserProfile } from "@/app/profile/page";
 import { createClient } from "../supabase/server"
 
 export async function getCurrentUserProfile(){
-    const supabase = await createClient()
+    const supabase = await createClient();
 
     const {
         data: { user },
@@ -29,7 +29,7 @@ export async function getCurrentUserProfile(){
 }
 
 export async function updateUserProfile(profileData: Partial<UserProfile>){
-    const supabase = await createClient()
+    const supabase = await createClient();
 
     const {
         data: { user },
@@ -58,7 +58,7 @@ export async function updateUserProfile(profileData: Partial<UserProfile>){
 }
 
 export async function uploadProfilePhoto(file: File){
-    const supabase = await createClient()
+    const supabase = await createClient();
 
     const {
         data: { user },
