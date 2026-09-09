@@ -13,7 +13,7 @@ export default function MatchButtons({
 }: MatchButtonsProps) {
   return (
     <div className="flex items-center justify-center gap-6">
-    {/* Redo - Yellow */}
+    {/* Redo - Yellow *
     <button
     onClick={onRedo}
     className="
@@ -33,7 +33,7 @@ export default function MatchButtons({
     aria-label="Redo"
     >
     <span className="text-2xl font-bold">↻</span>
-    </button>
+    </button> /}
 
     {/* Pass - Red */}
     <button
@@ -91,7 +91,7 @@ export default function MatchButtons({
     </svg>
     </button>
 
-    {/* Super Like - Blue */}
+    {/* Super Like - Blue 
     <button
     onClick={onSuperLike}
     className="
@@ -111,7 +111,7 @@ export default function MatchButtons({
     aria-label="Super Like"
     >
     <span className="text-2xl">★</span>
-    </button>
+    </button> */}
     </div>
   );
 }
