@@ -20,6 +20,7 @@ export interface UserProfile{
     birthdate: string;
     bio: string;
     avatar_url: string;
+    photo_urls: string[];
     preferences: UserPreferences;
     location_lat?: number;
     location_lng?: number;
@@ -175,6 +176,7 @@ export default function ProfilePage() {
                                                 <p className="text-gray-600 dark:text-gray-400">No games added yet.</p>
                                             )}
                                         </div>
+                                        
 
                                         <div>
                                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">

@@ -158,3 +158,58 @@ export async function getAvailableVideoGames() {
 
     return games as VideoGame[];
 }
+
+export async function uploadGalleryPhoto(file: File) {
+    const supabase = await createClient();
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+        return { success: false, error: "User not authenticated" };
+    }
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${user.id}-gallery-${Date.now()}.${fileExt}`;
+
+    const { error } = await supabase.storage.from("profile photos").upload(fileName, file, {
+        cacheControl: "3600",
+        upsert: false,
+    });
+
+    if (error) {
+        return { success: false, error: error.message };
+    }
+
+    const { data: { publicUrl } } = supabase.storage.from("profile photos").getPublicUrl(fileName);
+    return { success: true, url: publicUrl };
+}
+
+export async function updateUserPhotos(photoUrls: string[]) {
+    const supabase = await createClient();
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+        return { success: false, error: "User not authenticated" };
+    }
+
+    if (photoUrls.length > 5) {
+        return { success: false, error: "You can only have up to 5 photos" };
+    }
+
+    const { error } = await supabase.from("users").update({
+        photo_urls: photoUrls,
+        updated_at: new Date().toISOString(),
+    }).eq("id", user.id);
+
+    if (error) {
+        console.error(error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true };
+}

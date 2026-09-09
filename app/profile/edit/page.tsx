@@ -1,10 +1,12 @@
 "use client"
 
 import PhotoUpload from "@/components/PhotoUpload";
-import { getCurrentUserProfile, updateUserProfile, getAvailableVideoGames, updateUserFavouriteGames} from "@/lib/actions/profile";
+import PhotoUploader from "@/components/PhotoUploader";
+import { getCurrentUserProfile, updateUserProfile, getAvailableVideoGames, updateUserFavouriteGames, updateUserPhotos } from "@/lib/actions/profile";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { VideoGame } from "../page";
+
 
 export default function EditProfilePage(){
 
@@ -27,6 +29,7 @@ export default function EditProfilePage(){
     const [availableGames, setAvailableGames] = useState<VideoGame[]>([]);
     const [selectedGameIds, setSelectedGameIds] = useState<number[]>([]);
     const [gamesPickerOpen, setGamesPickerOpen] = useState(false);
+    const [photoUrls, setPhotoUrls] = useState<string[]>([]);
     const router = useRouter()
 
     useEffect(() => {
@@ -45,13 +48,15 @@ export default function EditProfilePage(){
                         gender: profileData.gender || "male",
                         birthdate: profileData.birthdate || "",
                         avatar_url: profileData.avatar_url || "",
+                        
                         age_min: profileData.preferences?.age_range?.min ?? 18,
                         age_max: profileData.preferences?.age_range?.max ?? 50,
                         distance: profileData.preferences?.distance ?? 25,
                         gender_preference: profileData.preferences?.gender_preference ?? [],
                    });
+                   setPhotoUrls(profileData.photo_urls ?? []);
                    setSelectedGameIds(profileData.favourite_games.map((g: VideoGame) => g.id));
-                   console.log("submitting game ids:", selectedGameIds);
+                   //console.log("submitting game ids:", selectedGameIds);
                 }
                 setAvailableGames(gamesData);
             } catch (err) {
@@ -82,6 +87,13 @@ export default function EditProfilePage(){
                 setError(gamesResult.error || "Failed to update favourite games");
                 return;
             }
+
+            const photosResult = await updateUserPhotos(photoUrls);
+            if(!photosResult.success){
+                setError(photosResult.error || "Failed to update photos");
+                return;
+            }
+            console.log("photoUrls being saved:", photoUrls);
 
             router.push("/profile");
         } catch {
@@ -187,6 +199,14 @@ export default function EditProfilePage(){
                                     </p>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Photo upload */}
+                        <div className="mb-8">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Photos
+                            </label>
+                            <PhotoUploader photos={photoUrls} onPhotosChange={setPhotoUrls} />
                         </div>
                         
                         {/* Basic info */}
