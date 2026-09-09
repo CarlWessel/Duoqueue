@@ -25,7 +25,21 @@ export default function MatchCard({user}: {user: UserProfile}){
                                     {user.full_name}, {calculateAge(user.birthdate)}
                                     </h2>
                                     <p className="text-sm opacity-90 mb-2">@{user.username}</p>
-                                    <p className="text-sm leading-relaxed">{user.bio}</p>
+                                    <p className="text-sm leading-relaxed mb-3">{user.bio}</p>
+
+                                    {user.favourite_games.length > 0 && (
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {user.favourite_games.map((game) => (
+                                                <span
+                                                    key={game.id}
+                                                    className="px-2.5 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-medium"
+                                                    title={game.company}
+                                                >
+                                                    🎮 {game.title}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

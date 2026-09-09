@@ -1,5 +1,5 @@
 "use client";
-import { getPotentialMatches, likeUser } from "@/lib/actions/matches";
+import { getPotentialMatches, likeUser, passUser } from "@/lib/actions/matches";
 import { useEffect, useState } from "react";
 import { UserProfile } from "../profile/page";
 import { useRouter } from "next/navigation";
@@ -50,9 +50,17 @@ export default function MatchesPage() {
             }
         }
     }
+    
+    async function handlePass() {
+        if (currentIndex < potentialMatches.length) {
+            const passedUser = potentialMatches[currentIndex];
 
-    function handlePass() {
-        if (currentIndex < potentialMatches.length - 1) {
+            try {
+                await passUser(passedUser.id);
+            } catch (err) {
+                console.error(err);
+            }
+
             setCurrentIndex((prev) => prev + 1);
         }
     }

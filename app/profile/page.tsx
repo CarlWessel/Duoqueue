@@ -5,6 +5,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { calculateAge } from "@/lib/helpers/calculate-age";
 
+export interface VideoGame{
+    id: number;
+    title: string;
+    company: string;
+};
+
 export interface UserProfile{
     id: string;
     full_name: string;
@@ -22,6 +28,7 @@ export interface UserProfile{
     is_online: boolean;
     created_at: string;
     updated_at: string;  
+    favourite_games: VideoGame[];
 }
 
 export interface UserPreferences {
@@ -136,7 +143,7 @@ export default function ProfilePage() {
                                                 {new Date(profile.created_at).toLocaleDateString()}
                                             </p>
                                         </div>
-                                    </div>
+                                    </div>     
 
                                     <div className="space-y-6">
                                         <div>
@@ -147,6 +154,28 @@ export default function ProfilePage() {
                                             {profile.bio || "No bio added yet."}
                                             </p>
                                         </div>
+
+                                        <div>
+                                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                                                Favourite Games
+                                            </h3>
+                                            {profile.favourite_games.length > 0 ? (
+                                                <div className="flex flex-wrap gap-2">
+                                                    {profile.favourite_games.map((game) => (
+                                                        <span
+                                                            key={game.id}
+                                                            className="px-3 py-1.5 bg-pink-50 dark:bg-gray-700 text-pink-700 dark:text-pink-300 rounded-full text-sm font-medium"
+                                                            title={game.company}
+                                                        >
+                                                            {game.title}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <p className="text-gray-600 dark:text-gray-400">No games added yet.</p>
+                                            )}
+                                        </div>
+
                                         <div>
                                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                                                 Basic Information
