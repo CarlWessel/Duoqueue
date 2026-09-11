@@ -3,9 +3,10 @@ import { useAuth } from "@/contexts/auth-context";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import SignUpModal from "@/components/SignupModal";
 
 export default function AuthPage(){
-    const [isSignUp, setIsSignUp] = useState<boolean>(false);
+    const [showSignUpModal, setShowSignUpModal] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -20,28 +21,15 @@ export default function AuthPage(){
         }
     }, [user, authLoading, router])
 
-    async function handleAuth(e: React.FormEvent){
+    // This page's form is now sign-in only; sign-up lives entirely in the modal.
+    async function handleSignIn(e: React.FormEvent){
         e.preventDefault();
         setLoading(true);
         setError("")
 
         try{
-            if (isSignUp){
-               const {data, error} = await supabase.auth.signUp({
-                email,
-                password,
-               });
-
-               if (error) throw error;
-               if(data.user && !data.session){
-                setError("Please check your email for a confirmation link");
-                return;
-               }
-
-            } else {
-                const { error } = await supabase.auth.signInWithPassword({ email, password});
-                if (error) throw error;
-            }
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) throw error;
         } catch (error: any){
             setError(error.message);
          } finally {
@@ -56,11 +44,18 @@ export default function AuthPage(){
                 <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
                     Duoqueue
                 </h1>
+
+                <div className="h-6 flex justify-center mb-2">
+                    <p className="text-gray-500 dark:text-gray-900 text-sm font-medium tracking-wide border-r-2 border-transparent whitespace-nowrap animate-typewriter">
+                        Find your player 2
+                    </p>
+                </div>
+
                 <p className="text-gray-600 dark:text-gray-400">
-                    {isSignUp? "Create Your Account" : "Sign into your account"}
+                    Sign into your account
                 </p>
             </div>
-            <form className="space-y-6" onSubmit={handleAuth}>
+            <form className="space-y-6" onSubmit={handleSignIn}>
                 <div>
                     <label
                         htmlFor="email"
@@ -108,20 +103,24 @@ export default function AuthPage(){
                     disabled={loading}
                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50"
                 >
-                    {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
+                    {loading ? "Loading..." : "Sign In"}
                 </button>
             </form>
             <div className="text-center">
                 <button
-                    onClick={() => setIsSignUp(!isSignUp)}
+                    onClick={() => setShowSignUpModal(true)}
                     className="text-pink-600 dark:text-pink-400 hover:text-pink-500 dark:hover:text-pink-300 text-sm"
                 >
-                    {isSignUp
-                    ? "Already have an account? Sign in"
-                    : "Don't have an account? Sign up"}
+                    Don't have an account? Sign up
                 </button>
             </div>
         </div>
+
+        <SignUpModal
+            isOpen={showSignUpModal}
+            onClose={() => setShowSignUpModal(false)}
+            onSuccess={() => setShowSignUpModal(false)}
+        />
     </div>
     );
 }
