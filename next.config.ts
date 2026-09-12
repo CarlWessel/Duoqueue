@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "raw.communitydragon.org",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "mfbjusvtdmxoyjxlnago.supabase.co"
       },
       {
