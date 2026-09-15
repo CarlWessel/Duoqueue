@@ -1,6 +1,7 @@
 "use client";
 
 import { getUserMatches } from "@/lib/actions/matches";
+import { getUserChatsWithLastMessage } from "@/lib/actions/stream"; // adjust to wherever that Stream file lives
 import { useEffect, useState } from "react";
 import { UserProfile } from "../profile/page";
 import Link from "next/link";
@@ -19,21 +20,45 @@ export default function ChatPage() {
 
   useEffect(() => {
     async function loadMatches() {
-        try {
-          const userMatches = await getUserMatches();
-          const chatData: ChatData[] = userMatches.map((match) => ({
+      try {
+        const [userMatches, streamChats] = await Promise.all([
+          getUserMatches(),
+          getUserChatsWithLastMessage(),
+        ]);
+
+        // Map matched-user id -> last message info from Stream, if a channel exists
+        const streamByOtherUserId = new Map(
+          streamChats
+            .filter((c) => c.otherUserId !== null)
+            .map((c) => [c.otherUserId as string, c])
+        );
+
+        const chatData: ChatData[] = userMatches.map((match) => {
+          const streamData = streamByOtherUserId.get(match.id);
+
+          return {
             id: match.id,
             user: match,
-            lastMessage: "Start your conversation!",
-            lastMessageTime: match.created_at,
+            lastMessage: streamData?.lastMessageText ?? "Start your conversation!",
+            // Fall back to the match's own created_at (real DB timestamp)
+            // for matches with no messages sent yet
+            lastMessageTime: streamData?.lastMessageTime ?? match.created_at,
             unreadCount: 0,
-          }));
-          setChats(chatData);
-          console.log(userMatches);
+          };
+        });
+
+        // Sort newest activity first
+        chatData.sort(
+          (a, b) =>
+            new Date(b.lastMessageTime).getTime() -
+            new Date(a.lastMessageTime).getTime()
+        );
+
+        setChats(chatData);
       } catch (error) {
-          console.error(error);
+        console.error(error);
       } finally {
-          setLoading(false);
+        setLoading(false);
       }
     }
 
@@ -41,9 +66,9 @@ export default function ChatPage() {
   }, []);
 
   function formatTime(timestamp: string) {
-      const date = new Date(timestamp);
-      const now = new Date();
-      const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
     if (diffInHours < 1) {
       return "Just now";

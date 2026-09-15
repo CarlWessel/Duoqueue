@@ -196,7 +196,10 @@ export default function ProfilePage() {
                                                      Birthday
                                                 </label>
                                                 <p className="text-gray-900 dark:text-white">
-                                                    {new Date(profile.birthdate).toLocaleDateString()}
+                                                {(() => {
+                                                    const [year, month, day] = profile.birthdate.split("-").map(Number);
+                                                    return new Date(year, month - 1, day).toLocaleDateString();
+                                                })()}
                                                 </p>
                                             </div>
                                         </div>

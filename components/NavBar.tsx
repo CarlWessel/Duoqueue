@@ -12,6 +12,7 @@ export default function Navbar() {
     { href: "/matches/list", label: "Matches", hover: "hover:text-blue-600 dark:hover:text-blue-400" },
     { href: "/chat", label: "Messages", hover: "hover:text-green-600 dark:hover:text-green-400" },
     { href: "/profile", label: "Profile", hover: "hover:text-purple-600 dark:hover:text-purple-400" },
+    { href: "/likes", label: "Likes", hover: "hover:text-yellow-600 dark:hover:text-yellow-400" },
   ];
 
   return (

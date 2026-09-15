@@ -1,11 +1,13 @@
-    export const calculateAge = (birthdate: string) => {
-        const today = new Date();
-        const birthDate = new Date(birthdate);
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
+export const calculateAge = (birthdate: string) => {
+  const [year, month, day] = birthdate.split("-").map(Number);
+  const today = new Date();
 
-        if(monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())){
-            age--;
-        }
-        return age;
-    };
+  let age = today.getFullYear() - year;
+  const monthDiff = today.getMonth() - (month - 1); // JS months are 0-indexed
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
+    age--;
+  }
+
+  return age;
+};

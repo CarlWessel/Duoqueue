@@ -125,3 +125,48 @@ export async function createOrGetChannel(otherUserId: string) {
       channelId,
   };
 }
+
+export async function getUserChatsWithLastMessage() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+
+  const serverClient = StreamChat.getInstance(
+    process.env.NEXT_PUBLIC_STREAM_API_KEY!,
+    process.env.STREAM_API_SECRET!
+  );
+
+  const filter = { type: "messaging", members: { $in: [user.id] } };
+  const sort: { last_message_at: -1 }[] = [{ last_message_at: -1 }];
+
+  const channels = await serverClient.queryChannels(filter, sort, {
+    state: true,
+    watch: false,
+    message_limit: 1, // only need the most recent message per channel
+  });
+
+  return channels.map((channel) => {
+    const otherUserId = Object.keys(channel.state.members).find(
+      (id) => id !== user.id
+    );
+
+    const messages = channel.state.messages;
+    const lastMessage = messages[messages.length - 1];
+
+    return {
+      channelId: channel.id!,
+      otherUserId: otherUserId ?? null,
+      lastMessageText: lastMessage?.text ?? null,
+      lastMessageTime:
+        lastMessage?.created_at?.toString() ??
+        channel.data?.created_at?.toString() ??
+        null,
+    };
+  });
+}

@@ -20,7 +20,7 @@ const fakeProfiles = [
     username: "ahri_9tails",
     email: "ahri@example.com",
     gender: "female" as const,
-    birthdate: "1995-03-15",
+    birthdate: "1900-03-15",
     bio: "Smell bad 🦊✨",
     avatar_url:
       "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/103.png",
@@ -36,7 +36,7 @@ const fakeProfiles = [
     username: "lux_lightbringer",
     email: "lux@example.com",
     gender: "female" as const,
-    birthdate: "1990-11-08",
+    birthdate: "1900-11-08",
     bio: "DEMENCIA!! ✨📖",
     avatar_url:
       "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/99.png",
@@ -51,7 +51,7 @@ const fakeProfiles = [
     username: "ez_explorer",
     email: "ezreal@example.com",
     gender: "male" as const,
-    birthdate: "1988-05-12",
+    birthdate: "1900-05-12",
     bio: "YoU bElOnG iN a MuSeUm 🗺️⚡",
     avatar_url:
       "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/81.png",
@@ -67,7 +67,7 @@ const fakeProfiles = [
     username: "mf_bounty_hunter",
     email: "missfortune@example.com",
     gender: "female" as const,
-    birthdate: "1994-02-28",
+    birthdate: "1900-02-28",
     bio: "Looking for my husband Nick 🏴‍☠️💰",
     avatar_url:
       "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/21.png",
@@ -82,7 +82,7 @@ const fakeProfiles = [
     username: "garen_might",
     email: "garen@example.com",
     gender: "male" as const,
-    birthdate: "1991-06-14",
+    birthdate: "1900-06-14",
     bio: "DEMACIIIAAAA!!! 🛡️💪",
     avatar_url:
       "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/86.png",
