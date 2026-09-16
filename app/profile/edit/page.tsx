@@ -195,7 +195,7 @@ export default function EditProfilePage(){
                                         Upload a new profile picture
                                     </p>
                                     <p className="text-xs text-gray-500 dark:text-gray-500">
-                                        JPG, PNG or GIF, Mac 5MB.
+                                        JPG, PNG or GIF, Max 5MB.
                                     </p>
                                 </div>
                             </div>
