@@ -35,7 +35,9 @@ export default function RootLayout({
         <AuthProvider>
           <div className="h-full flex flex-col">
             <Navbar />
-            {children}
+            <main className="flex-1 overflow-y-auto">
+              {children}
+            </main>
           </div>
         </AuthProvider>
       </body>
