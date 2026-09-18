@@ -31,7 +31,7 @@ export default function AuthPage(){
             const { error } = await supabase.auth.signInWithPassword({ email, password });
             if (error) throw error;
         } catch (error: any){
-            setError(error.message);
+            setError("Invalid login credentials, please try again");
          } finally {
             setLoading(false);
          }
